@@ -1,2 +1,24 @@
-# lol-mh-viewe
-REST API that allows saving multiple league of legend games with stats / outcome / champion played.
+# League of Legends Match History API
+
+A Spring Boot REST API for tracking League of Legends match history and champion information. This project allows you to store and retrieve match statistics, champion details, and champion skins data.
+
+## Features
+
+- **Match History Management**
+  - Track wins/losses
+  - Store KDA
+  - Record champion played
+  - ... 
+
+- **Champion Information**
+  - Complete champion roster
+  - Champion role
+  - Skin collection for each champion
+
+## Technologies
+
+- Java
+- Spring Boot
+- PostgreSQL
+- Spring Data JPA
+- Maven
