@@ -12,7 +12,6 @@ A Spring Boot REST API for tracking League of Legends match history and champion
 
 - **Champion Information**
   - Complete champion roster
-  - Champion role
   - Skin collection for each champion
 
 ## Technologies
