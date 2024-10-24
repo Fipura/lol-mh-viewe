@@ -1,10 +1,13 @@
 package com.fipura.lol_mh_viewer.controller;
 
 import com.fipura.lol_mh_viewer.model.Champion;
-import com.fipura.lol_mh_viewer.model.ChampionDTO;
-import com.fipura.lol_mh_viewer.model.SkinDTO;
+import com.fipura.lol_mh_viewer.model.ChampionEnum;
+import com.fipura.lol_mh_viewer.model.Skin;
 import com.fipura.lol_mh_viewer.repository.ChampionRepository;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,16 +25,13 @@ public class ChampionController {
 
     @GetMapping
     public List<String> getChampions() {
-        // Return a list of champion names
-        return Arrays.stream(Champion.values())
-                .map(Champion::getName)
-                .collect(Collectors.toList());
+        return Arrays.stream(ChampionEnum.values()).map(ChampionEnum::getName).collect(Collectors.toList());
     }
 
     @GetMapping("{champion}")
-    public List<SkinDTO> getSkins(@PathVariable String champion){
-        ChampionDTO championToReturn = championRepository.findByName(champion);
-        if (championToReturn == null){
+    public List<Skin> getSkins(@PathVariable String champion) {
+        Champion championToReturn = championRepository.findByName(champion);
+        if (championToReturn == null) {
             throw new IllegalArgumentException("Champion not found");
         }
         return championToReturn.getSkins();
