@@ -1,6 +1,6 @@
 # League of Legends Match History API
 
-A Spring Boot REST API for tracking League of Legends match history and champion information. This project allows you to store and retrieve match statistics, champion details, and champion skins data.
+A Spring Boot REST API for tracking League of Legends match history and champion information. This project allows you to store and retrieve match statistics and champion skins data (to be implemented).
 
 ## Features
 
