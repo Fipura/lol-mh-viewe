@@ -1,5 +1,6 @@
 package com.fipura.lol_mh_viewer.controller;
 
+import com.fipura.lol_mh_viewer.model.Champion;
 import com.fipura.lol_mh_viewer.model.Match;
 import com.fipura.lol_mh_viewer.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
