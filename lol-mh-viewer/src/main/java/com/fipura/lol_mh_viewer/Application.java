@@ -1,6 +1,6 @@
 package com.fipura.lol_mh_viewer;
 
-import com.fipura.lol_mh_viewer.model.Champion;
+import com.fipura.lol_mh_viewer.model.ChampionEnum;
 import com.fipura.lol_mh_viewer.model.GameOutcome;
 import com.fipura.lol_mh_viewer.model.Match;
 import com.fipura.lol_mh_viewer.repository.MatchRepository;
@@ -21,7 +21,7 @@ public class Application {
         return args -> {
             Match match = new Match(
                     GameOutcome.VICTORY,
-                    Champion.VAYNE,
+                    ChampionEnum.VAYNE,
                     10,
                     0,
                     5,

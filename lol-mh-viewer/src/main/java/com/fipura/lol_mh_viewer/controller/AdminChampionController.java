@@ -1,7 +1,7 @@
 package com.fipura.lol_mh_viewer.controller;
 
 import com.fipura.lol_mh_viewer.model.Champion;
-import com.fipura.lol_mh_viewer.model.ChampionDTO;
+import com.fipura.lol_mh_viewer.model.ChampionEnum;
 import com.fipura.lol_mh_viewer.service.AdminChampionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +21,8 @@ public class AdminChampionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ChampionDTO>> getAllChampions() {
-        List<ChampionDTO> champions = adminChampionService.getAllChampionsData(Champion.values());
+    public ResponseEntity<List<Champion>> getAllChampions() {
+        List<Champion> champions = adminChampionService.getAllChampionsData(ChampionEnum.values());
         return ResponseEntity.ok(champions);
     }
 }

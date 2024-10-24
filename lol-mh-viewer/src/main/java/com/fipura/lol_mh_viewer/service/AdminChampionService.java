@@ -2,8 +2,8 @@ package com.fipura.lol_mh_viewer.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fipura.lol_mh_viewer.model.Champion;
-import com.fipura.lol_mh_viewer.model.ChampionDTO;
-import com.fipura.lol_mh_viewer.model.SkinDTO;
+import com.fipura.lol_mh_viewer.model.ChampionEnum;
+import com.fipura.lol_mh_viewer.model.Skin;
 import com.fipura.lol_mh_viewer.repository.ChampionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,23 +29,20 @@ public class AdminChampionService {
         this.repository = repository;
     }
 
-    public ChampionDTO getChampionData(String championName) {
+    public Champion getChampionData(String championName) {
         try {
-            //get the index 0 of the versions array
             ResponseEntity<String[]> versionResponse = restTemplate.getForEntity(VERSION_URL, String[].class);
             String version = versionResponse.getBody()[0];
-            //replace {version} with vesion and {champion} with championName
-
             String url = BASE_URL.replace("{version}", version).replace("{champion}", championName);
 
             ResponseEntity<JsonNode> response = restTemplate.getForEntity(url, JsonNode.class);
             JsonNode skinsNode = response.getBody().get("data").get(championName).get("skins");
-            List<SkinDTO> skins = new ArrayList<>();
+            List<Skin> skins = new ArrayList<>();
             for (JsonNode skinNode : skinsNode) {
-                skins.add(new SkinDTO(skinNode.get("name").asText()));
+                skins.add(new Skin(skinNode.get("name").asText()));
             }
 
-            ChampionDTO championToAdd = new ChampionDTO(championName, skins);
+            Champion championToAdd = new Champion(championName, skins);
             return repository.save(championToAdd);
 
         } catch (Exception e) {
@@ -53,7 +50,7 @@ public class AdminChampionService {
         }
     }
 
-    public List<ChampionDTO> getAllChampionsData(Champion[] champions) {
+    public List<Champion> getAllChampionsData(ChampionEnum[] champions) {
         return Arrays.stream(champions).map(champion -> getChampionData(champion.getName())).collect(Collectors.toList());
     }
 

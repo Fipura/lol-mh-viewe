@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "skins")
 @NoArgsConstructor
-public class SkinDTO {
+public class Skin {
 
     @Id
     @SequenceGenerator(name = "skin_sequence", sequenceName = "skin_sequence", allocationSize = 1)
@@ -18,7 +18,7 @@ public class SkinDTO {
     private Integer id;
     private String name;
 
-    public SkinDTO(String name) {
+    public Skin(String name) {
         this.name = name;
     }
 

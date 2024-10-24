@@ -21,7 +21,7 @@ public class Match {
     @Enumerated(EnumType.STRING)
     private GameOutcome gameOutcome;
     @Enumerated(EnumType.STRING)
-    private Champion champion;
+    private ChampionEnum champion;
     @NotNull
     @Min(0)
     private int kills;
@@ -36,7 +36,7 @@ public class Match {
     private int gameDurationSeconds;
 
 
-    public Match(GameOutcome gameOutcome, Champion champion, int kills, int deaths, int assists, int gameDurationSeconds) {
+    public Match(GameOutcome gameOutcome, ChampionEnum champion, int kills, int deaths, int assists, int gameDurationSeconds) {
         this.gameOutcome = gameOutcome;
         this.champion = champion;
         this.kills = kills;
