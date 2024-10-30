@@ -18,16 +18,14 @@ public class Application {
 
     @Bean
     CommandLineRunner commandLineRunner(MatchRepository repository) {
-        return args -> {
-            Match match = new Match(
-                    GameOutcome.VICTORY,
-                    ChampionEnum.VAYNE,
-                    10,
-                    0,
-                    5,
-                    1836
-            );
-            repository.save(match);
-        };
+        if (repository.count() == 0) {
+            return args -> {
+                Match match = new Match(GameOutcome.VICTORY, ChampionEnum.VAYNE, 10, 0, 5, 1836);
+                repository.save(match);
+            };
+        } else {
+            return args -> {
+            };
+        }
     }
 }
