@@ -43,6 +43,11 @@ public class AdminChampionService {
             }
 
             Champion championToAdd = new Champion(championName, skins);
+
+            if (repository.findByName(championName) != null){
+                return null;
+            }
+
             return repository.save(championToAdd);
 
         } catch (Exception e) {

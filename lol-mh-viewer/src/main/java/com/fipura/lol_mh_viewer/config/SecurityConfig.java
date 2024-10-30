@@ -1,9 +1,17 @@
 package com.fipura.lol_mh_viewer.config;
 
+import com.fipura.lol_mh_viewer.model.Role;
+import jakarta.servlet.Filter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,33 +19,43 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtAuthenticationFilter jwtAuthFilter;
+
+    private final AuthenticationProvider authenticationProvider;
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/matches/**", "api/champions/**").hasAnyRole("USER", "ADMIN")
-                        .anyRequest().authenticated()
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(
+                        auth ->
+                                auth
+                                        .requestMatchers("/api/auth/**")
+                                        .permitAll()
+                                        .requestMatchers("/api/admin/**").hasAnyAuthority(Role.ADMIN.name())
+                                        .requestMatchers("/api/matches/**", "api/champions/**")
+                                        .hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                                        .anyRequest().authenticated()
                 )
-                .httpBasic()
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessHandler((req, res, auth) -> {
-                    res.setStatus(200);
-                    res.getWriter().write("Logout successful");
-                })
-                .clearAuthentication(true)
-                .invalidateHttpSession(true);
-        return http.build();
+                .formLogin(AbstractAuthenticationFilterConfigurer::disable)
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .permitAll()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return httpSecurity.build();
     }
-    @Bean
+    /*@Bean
     public UserDetailsService users(){
         UserDetails user = User.builder()
                 .username("user")
@@ -56,5 +74,5 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-    }
+    }*/
 }
