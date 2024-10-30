@@ -21,3 +21,4 @@ A Spring Boot REST API for tracking League of Legends match history and champion
 - PostgreSQL
 - Spring Data JPA
 - Maven
+- Spring Security
